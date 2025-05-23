@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Inaama jay || Personal Portfolio</title>
+    <title>Manvendra || Personal Portfolio</title>
     <meta name="robots" content="noindex, follow">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/images/logo/U.png">
     <!-- CSS 
     ============================================ -->
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
@@ -1285,10 +1285,30 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Bootstrap Modal for Success Message -->
+<!-- Bootstrap Modal for Success Message -->
+<!-- Bootstrap Modal for Success Message -->
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Message Sent!</h5>
+            </div>
+            <div class="modal-body">
+                Your message has been sent successfully. I'll get back to you soon!
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-primary btn-lg px-1 fs-1" data-bs-dismiss="modal" id="modalCloseBtn">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
             </div>
         </div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-        <script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
 (function() {
     // Initialize EmailJS with your Public Key
     try {
@@ -1298,6 +1318,11 @@
         console.error("EmailJS initialization failed:", error);
     }
 
+    // Get the modal element
+    const successModalElement = document.getElementById('successModal');
+    const successModal = new bootstrap.Modal(successModalElement);
+
+    // Add event listener for form submission
     document.getElementById('contact-form').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -1317,15 +1342,21 @@
         emailjs.sendForm('service_s8dvw1f', 'template_nxuac9w', form)
             .then(function(response) {
                 console.log("Email sent successfully:", response);
-                formMessages.style.display = 'block';
-                formMessages.className = 'alert alert-success';
-                formMessages.textContent = 'Message sent successfully!';
+                // Show the Bootstrap modal
+                successModal.show();
+                if (formMessages) {
+                    formMessages.style.display = 'block';
+                    formMessages.className = 'alert alert-success';
+                    formMessages.textContent = 'Message sent successfully!';
+                }
                 form.reset(); // Reset form fields
             }, function(error) {
                 console.error("EmailJS send error:", error);
-                formMessages.style.display = 'block';
-                formMessages.className = 'alert alert-danger';
-                formMessages.textContent = 'Failed to send message: ' + (error.text || 'Please try again later.');
+                if (formMessages) {
+                    formMessages.style.display = 'block';
+                    formMessages.className = 'alert alert-danger';
+                    formMessages.textContent = 'Failed to send message: ' + (error.text || 'Please try again later.');
+                }
             })
             .finally(function() {
                 // Reset button state
@@ -1333,9 +1364,13 @@
                 submitButton.querySelector('span').textContent = 'SEND MESSAGE';
             });
     });
+
+    // Ensure the modal can be closed (already handled by Bootstrap's data-bs-dismiss, but adding for clarity)
+    successModalElement.addEventListener('hidden.bs.modal', function () {
+        console.log("Modal closed");
+    });
 })();
 </script>
-
         <!-- End Contuct section -->
 
         
